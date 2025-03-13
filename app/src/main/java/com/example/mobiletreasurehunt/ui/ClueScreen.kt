@@ -7,8 +7,10 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +41,7 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel:
     var showHint by remember { mutableStateOf(false) }
     var userLocation by remember { mutableStateOf<LatLng?>(null) }
     var markerPosition by remember { mutableStateOf<LatLng?>(null) }
+    var showIncorrectLocationDialog by remember { mutableStateOf(false) }
 
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
 
@@ -62,6 +65,19 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel:
                 REQUEST_LOCATION_PERMISSION
             )
         }
+    }
+
+    if (showIncorrectLocationDialog) {
+        AlertDialog(
+            onDismissRequest = { showIncorrectLocationDialog = false },
+            title = { Text("Incorrect Location") },
+            text = { Text("The selected location is not correct. Please try again.") },
+            confirmButton = {
+                TextButton(onClick = { showIncorrectLocationDialog = false }) {
+                    Text("OK")
+                }
+            }
+        )
     }
 
     Column(
@@ -131,10 +147,24 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel:
                     }
                 } else {
                     Log.d("ClueScreen", "Marker is too far from the clue location.")
+                    markerPosition = null // Allow the user to place the marker again
+                    showHint = false // Reset hint visibility
+                    showIncorrectLocationDialog = true // Show incorrect location dialog
                 }
             } ?: Log.d("ClueScreen", "No marker placed.")
         }) {
             Text("Found it!")
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(onClick = {
+            timerViewModel.stopTimer()
+            navController.navigate("startHuntScreen") {
+                popUpTo("ClueScreen/{clueIndex}") { inclusive = true }
+            }
+        }) {
+            Text("Quit")
         }
 
         Spacer(modifier = Modifier.height(20.dp))
