@@ -24,21 +24,41 @@ import com.example.mobiletreasurehunt.ui.TimerViewModel
 import com.example.mobiletreasurehunt.ui.ClueSolvedPage
 import androidx.compose.runtime.*
 import androidx.compose.runtime.collectAsState
-
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import android.Manifest
+import android.content.pm.PackageManager
 
 class MainActivity : ComponentActivity() {
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private var permissionGranted by mutableStateOf(false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         LocationManager.initialize(this)
+
+        requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            permissionGranted = isGranted
+        }
+
+        // Check initial permission status
+        val permissionCheck = ActivityCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        permissionGranted = permissionCheck == PackageManager.PERMISSION_GRANTED
+
         setContent {
-            TreasureHuntApp()
+            TreasureHuntApp(permissionGranted, requestPermissionLauncher)
         }
     }
 }
 
 @Composable
-fun TreasureHuntApp() {
+fun TreasureHuntApp(permissionGranted: Boolean, requestPermissionLauncher: ActivityResultLauncher<String>) {
     val navController = rememberNavController()
     val timerViewModel: TimerViewModel = viewModel()
 
@@ -46,7 +66,11 @@ fun TreasureHuntApp() {
     val elapsedTime by timerViewModel.elapsedTime.collectAsState()
 
     NavHost(navController = navController, startDestination = "permissionsScreen") {
-        composable("permissionsScreen") { PermissionsScreen(navController) }
+        composable("permissionsScreen") {
+            PermissionsScreen(navController, permissionGranted) {
+                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+        }
         composable("startHuntScreen") { StartHuntScreen(navController, timerViewModel) }
 
         composable("ClueScreen/{clueIndex}") { backStackEntry ->
