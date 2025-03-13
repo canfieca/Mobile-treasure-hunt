@@ -117,7 +117,8 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel:
 
         Button(onClick = {
             markerPosition?.let { location ->
-                if (isUserAtLocation(location, clueLocation)) {
+                Log.d("Haversine function: ", "${haversine(location, clueLocation)}")
+                if (haversine(location, clueLocation)) {
                     val encodedClueInfo = URLEncoder.encode(currentClue.info, StandardCharsets.UTF_8.toString())
                     val nextClueIndex = currentClueIndex + 1
                     if (currentClueIndex == 2) { // Assuming 2 is the last clue index
@@ -133,7 +134,7 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel:
                 }
             } ?: Log.d("ClueScreen", "No marker placed.")
         }) {
-            Text("Check Location")
+            Text("Found it!")
         }
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -148,13 +149,24 @@ fun loadTreasureHunt(context: Context): TreasureHunt {
     return Gson().fromJson(reader, TreasureHunt::class.java)
 }
 
-fun isUserAtLocation(userLocation: LatLng, targetLocation: LatLng, radius: Float = 150f): Boolean {
-    val results = FloatArray(1)
-    Log.d("isUserAtLocation: ", "${userLocation}, ${targetLocation}")
-    Location.distanceBetween(
-        userLocation.latitude, userLocation.longitude,
-        targetLocation.latitude, targetLocation.longitude,
-        results
-    )
-    return results[0] <= radius
+fun haversine(userLocation: LatLng, targetLocation: LatLng): Boolean {
+    val earthRadius: Double = 6372.8
+
+    val tLat = Math.toRadians(targetLocation.latitude - userLocation.latitude);
+    val tLon = Math.toRadians(targetLocation.longitude - userLocation.longitude);
+    val originLat = Math.toRadians(userLocation.latitude);
+    val destinationLat = Math.toRadians(targetLocation.latitude);
+
+    val a = Math.pow(Math.sin(tLat / 2), 2.toDouble()) + Math.pow(Math.sin(tLon / 2), 2.toDouble()) * Math.cos(destinationLat);
+    val c = 2 * Math.asin(Math.sqrt(a));
+
+    val distance = earthRadius * c;
+    Log.d("DistanceHaversine: ", "${distance}")
+
+    if (distance <= 0.150) { // Buffer distance is 150 meters
+        return true
+    } else {
+        return false
+    }
+
 }
