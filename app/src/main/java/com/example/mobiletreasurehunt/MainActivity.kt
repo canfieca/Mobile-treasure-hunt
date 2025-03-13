@@ -16,6 +16,9 @@ import com.example.mobiletreasurehunt.ui.PermissionsScreen
 import com.example.mobiletreasurehunt.ui.StartHuntScreen
 import com.example.mobiletreasurehunt.ui.TimerViewModel
 import com.example.mobiletreasurehunt.ui.ClueSolvedPage
+import androidx.compose.runtime.*
+import androidx.compose.runtime.collectAsState
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,27 +36,29 @@ fun TreasureHuntApp() {
     val navController = rememberNavController()
     val timerViewModel: TimerViewModel = viewModel()
 
+    // Collect the elapsed time from the StateFlow
+    val elapsedTime by timerViewModel.elapsedTime.collectAsState()
+
     NavHost(navController = navController, startDestination = "permissionsScreen") {
         composable("permissionsScreen") { PermissionsScreen(navController) }
         composable("startHuntScreen") { StartHuntScreen(navController, timerViewModel) }
 
-        // ClueScreen expects an index to track the current clue
         composable("ClueScreen/{clueIndex}") { backStackEntry ->
             val clueIndex = backStackEntry.arguments?.getString("clueIndex")?.toIntOrNull() ?: 0
             ClueScreen(navController, clueIndex, timerViewModel)
         }
 
-        // ClueSolvedScreen expects the clue info and index for tracking progress
         composable("ClueSolvedScreen/{clueInfo}/{clueIndex}") { backStackEntry ->
             val clueInfo = backStackEntry.arguments?.getString("clueInfo") ?: "No information available"
             val clueIndex = backStackEntry.arguments?.getString("clueIndex")?.toIntOrNull() ?: 0
             ClueSolvedPage(navController, clueInfo, clueIndex, timerViewModel)
         }
 
-        // HuntDoneScreen expects the clue info for the last clue
         composable("HuntDoneScreen/{clueInfo}") { backStackEntry ->
             val clueInfo = backStackEntry.arguments?.getString("clueInfo") ?: "No information available"
-            HuntDoneScreen(clueInfo, timerViewModel.elapsedTime)
+
+            // Pass the collected elapsedTime instead of the StateFlow
+            HuntDoneScreen(clueInfo, elapsedTime)
         }
     }
 }

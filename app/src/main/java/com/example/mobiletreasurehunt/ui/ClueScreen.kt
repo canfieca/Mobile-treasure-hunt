@@ -39,7 +39,6 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel:
     var showHint by remember { mutableStateOf(false) }
     var userLocation by remember { mutableStateOf<LatLng?>(null) }
     var markerPosition by remember { mutableStateOf<LatLng?>(null) }
-    var isStopwatchRunning by remember { mutableStateOf(true) }
 
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
 
@@ -47,6 +46,7 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel:
     val clueLocation = LatLng(currentClue.longitude, currentClue.latitude)
 
     LaunchedEffect(Unit) {
+        timerViewModel.startTimer()
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 location?.let {
@@ -68,7 +68,8 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel:
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Time: ${timerViewModel.elapsedTime}s", fontSize = 18.sp)
+        val elapsedTime by timerViewModel.elapsedTime.collectAsState()
+        Text("Time: ${elapsedTime}s", fontSize = 18.sp)
         Text("Clue Screen", fontSize = 24.sp)
         Spacer(modifier = Modifier.height(20.dp))
         Text(currentClue.clue, fontSize = 18.sp)
@@ -120,6 +121,7 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel:
                     val encodedClueInfo = URLEncoder.encode(currentClue.info, StandardCharsets.UTF_8.toString())
                     val nextClueIndex = currentClueIndex + 1
                     if (currentClueIndex == 2) { // Assuming 2 is the last clue index
+                        timerViewModel.stopTimer()
                         navController.navigate("HuntDoneScreen/$encodedClueInfo") {
                             popUpTo("ClueScreen/{clueIndex}") { inclusive = true }
                         }
