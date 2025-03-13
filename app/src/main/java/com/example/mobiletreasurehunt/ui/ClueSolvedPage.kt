@@ -16,6 +16,12 @@ import androidx.navigation.NavHostController
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 
+/**
+ * Cameron Canfield
+ * Mobile Dev
+ * Mobile Treasure Hunt
+ */
+
 @Composable
 fun ClueSolvedPage(navController: NavHostController, clueInfo: String, clueIndex: Int, timerViewModel: TimerViewModel) {
     LaunchedEffect(Unit) {
