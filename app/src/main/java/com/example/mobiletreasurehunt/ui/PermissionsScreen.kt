@@ -21,19 +21,10 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import com.google.android.gms.location.LocationServices
+import androidx.activity.result.contract.ActivityResultContracts
 
 @Composable
-fun PermissionsScreen(navController: NavHostController) {
-    val context = LocalContext.current
-    var permissionGranted by remember { mutableStateOf(false) }
-
-    LaunchedEffect(Unit) {
-        val permissionCheck = ActivityCompat.checkSelfPermission(
-            context, Manifest.permission.ACCESS_FINE_LOCATION
-        )
-        permissionGranted = permissionCheck == PackageManager.PERMISSION_GRANTED
-    }
-
+fun PermissionsScreen(navController: NavHostController, permissionGranted: Boolean, requestPermission: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -50,13 +41,7 @@ fun PermissionsScreen(navController: NavHostController) {
             }
         } else {
             Button(
-                onClick = {
-                    ActivityCompat.requestPermissions(
-                        (context as ComponentActivity),
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                        1
-                    )
-                }
+                onClick = { requestPermission() }
             ) {
                 Text("Grant Location Permission")
             }
