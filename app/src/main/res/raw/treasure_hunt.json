@@ -1,0 +1,37 @@
+{
+  "rules": {
+    "1": "Press start to begin",
+    "2": "You'll be presented with a clue about a location",
+    "3": {
+      "3": "Try your best to find the location",
+      "3a": "If you're correct you'll be presented with info about the location",
+      "3b": "Then you'll presented with the next clue - total of three clues",
+      "3c": "While you're solving these clues a timer will be measuring your progress"
+    },
+    "4": "If you're stuck or incorrect you can use the hint button",
+    "5": "Once all locations are found the timer will stop and you've completed the game!"
+  },
+  "clues": [
+    {
+      "clue": "This OSU hall is the only one on campus that can be considered ALIVE",
+      "hint": "This building is apart Oregon Forest Science Complex",
+      "longitude": 44.56436,
+      "latitude": -123.28568,
+      "info": "The SMART-CLT project, which stands for 'Structural Health Monitoring and Post-Occupancy Performance of Mass Timber Buildings,' will analyze critical factors impacting the performance of CLT during its service life. The project will also develop protocols for the monitoring of key building factors so CLT can be effectively studied on small and large scales. 381 sensors are installed throughout the PFSC and will monitor wood moisture content, indoor and outdoor weather conditions, heat transfer, long-term movement of walls and floors, tension in self-centering rods and building and floor vibrations. (https://www.forestry.oregonstate.edu/ofsc/homepage)"
+    },
+    {
+      "clue": "A dynamic, sustainably designed state-of-art education and research learning environment that attracts faculty, students, and partnerships for expanded funding supporting cutting-edge innovation",
+      "hint": "The new home of OSU's Computer Science and Electrical and Computer Engineering departments",
+      "longitude": 44.5670486,
+      "latitude": -123.2787248,
+      "info": "Completed in 2004, the Kelley Engineering building was the first building on OSU's campus - and one of the first in the state - to earn green certification."
+    },
+    {
+      "clue": "An outdoor athletic stadium originally named Parker Stadium, but then renamed to honor Al and Pat ___________",
+      "hint": "The people that it was renamed after were the owners of RESER's Fine Foods",
+      "longitude": 44.559,
+      "latitude": -123.281,
+      "info": "Home of the Oregon State Beavers, and location of the epic 21 point comeback at the end of the third quarter during 2023"
+    }
+  ]
+}
