@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
@@ -31,7 +30,7 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
-fun ClueScreen(navController: NavHostController, clueIndex: Int) {
+fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel: TimerViewModel) {
     val context = LocalContext.current
     val treasureHunt = remember { loadTreasureHunt(context) }
     val backStackEntry = navController.currentBackStackEntry
@@ -40,6 +39,7 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int) {
     var showHint by remember { mutableStateOf(false) }
     var userLocation by remember { mutableStateOf<LatLng?>(null) }
     var markerPosition by remember { mutableStateOf<LatLng?>(null) }
+    var isStopwatchRunning by remember { mutableStateOf(true) }
 
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
 
@@ -68,6 +68,7 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int) {
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text("Time: ${timerViewModel.elapsedTime}s", fontSize = 18.sp)
         Text("Clue Screen", fontSize = 24.sp)
         Spacer(modifier = Modifier.height(20.dp))
         Text(currentClue.clue, fontSize = 18.sp)
@@ -132,8 +133,6 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int) {
         }) {
             Text("Check Location")
         }
-
-
 
         Spacer(modifier = Modifier.height(20.dp))
     }

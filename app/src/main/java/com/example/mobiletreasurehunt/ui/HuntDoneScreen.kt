@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
@@ -18,6 +17,7 @@ import java.nio.charset.StandardCharsets
 @Composable
 fun HuntDoneScreen(
     clueInfo: String,
+    elapsedTime: Long,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
     val decodedClueInfo = URLDecoder.decode(clueInfo, StandardCharsets.UTF_8.toString())
@@ -33,6 +33,7 @@ fun HuntDoneScreen(
         ) {
             Text("Hunt Completed!", fontSize = 24.sp)
             Text("Last Clue Location: $decodedClueInfo", fontSize = 18.sp)
+            Text("Total Time: ${elapsedTime}s", fontSize = 18.sp)
         }
     }
 }

@@ -1,3 +1,5 @@
+package com.example.mobiletreasurehunt.ui
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -12,11 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 
 @Composable
-fun ClueSolvedPage(navController: NavHostController, clueInfo: String, clueIndex: Int) {
+fun ClueSolvedPage(navController: NavHostController, clueInfo: String, clueIndex: Int, timerViewModel: TimerViewModel) {
+    timerViewModel.stopTimer()
 
     val decodedClueInfo = URLDecoder.decode(clueInfo, StandardCharsets.UTF_8.toString())
 
@@ -35,10 +39,10 @@ fun ClueSolvedPage(navController: NavHostController, clueInfo: String, clueIndex
 
             // Button to go to the next clue
             Button(onClick = {
+                timerViewModel.startTimer()
                 navController.navigate("ClueScreen/${clueIndex}") {
                     popUpTo("ClueScreen/{clueIndex}") { inclusive = true }
                 }
-
             }) {
                 Text("Next Clue")
             }
