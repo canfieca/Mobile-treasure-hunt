@@ -57,8 +57,8 @@ fun TreasureHuntApp() {
         composable("HuntDoneScreen/{clueInfo}") { backStackEntry ->
             val clueInfo = backStackEntry.arguments?.getString("clueInfo") ?: "No information available"
 
-            // Pass the collected elapsedTime instead of the StateFlow
-            HuntDoneScreen(clueInfo, elapsedTime)
+            // Pass the collected elapsedTime and navController
+            HuntDoneScreen(navController, clueInfo, elapsedTime)
         }
     }
 }
