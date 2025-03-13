@@ -50,6 +50,7 @@ fun StartHuntScreen(navController: NavHostController, timerViewModel: TimerViewM
         Spacer(modifier = Modifier.height(30.dp))
         Button(
             onClick = {
+                timerViewModel.resetTimer()
                 timerViewModel.startTimer()
                 navController.navigate("ClueScreen/0")
             },
