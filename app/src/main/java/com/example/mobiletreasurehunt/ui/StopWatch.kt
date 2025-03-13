@@ -1,5 +1,11 @@
 package com.example.mobiletreasurehunt.ui
 
+/**
+ * Cameron Canfield
+ * Mobile Dev
+ * Mobile Treasure Hunt
+ */
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import kotlinx.coroutines.delay

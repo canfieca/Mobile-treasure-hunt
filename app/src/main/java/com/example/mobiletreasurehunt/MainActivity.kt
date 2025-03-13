@@ -1,5 +1,11 @@
 package com.example.mobiletreasurehunt
 
+/**
+ * Cameron Canfield
+ * Mobile Dev
+ * Mobile Treasure Hunt
+ */
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent

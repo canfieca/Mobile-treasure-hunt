@@ -1,5 +1,12 @@
 package com.example.mobiletreasurehunt.ui
 
+/**
+ * Cameron Canfield
+ * Mobile Dev
+ * Mobile Treasure Hunt
+ */
+
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

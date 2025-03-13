@@ -31,6 +31,12 @@ import java.io.InputStreamReader
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
+/**
+ * Cameron Canfield
+ * Mobile Dev
+ * Mobile Treasure Hunt
+ */
+
 @Composable
 fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel: TimerViewModel) {
     val context = LocalContext.current

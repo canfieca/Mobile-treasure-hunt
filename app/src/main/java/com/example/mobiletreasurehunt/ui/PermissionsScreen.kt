@@ -1,5 +1,11 @@
 package com.example.mobiletreasurehunt.ui
 
+/**
+ * Cameron Canfield
+ * Mobile Dev
+ * Mobile Treasure Hunt
+ */
+
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.ComponentActivity

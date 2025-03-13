@@ -1,5 +1,11 @@
 package com.example.mobiletreasurehunt
 
+/**
+ * Cameron Canfield
+ * Mobile Dev
+ * Mobile Treasure Hunt
+ */
+
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context

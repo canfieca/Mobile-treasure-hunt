@@ -9,6 +9,12 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
+/**
+ * Cameron Canfield
+ * Mobile Dev
+ * Mobile Treasure Hunt
+ */
+
 class RulesViewModel(context: Context) : ViewModel() {
     private val _rules = MutableStateFlow<Map<String, RuleItem>>(emptyMap())
     val rules: StateFlow<Map<String, RuleItem>> = _rules
