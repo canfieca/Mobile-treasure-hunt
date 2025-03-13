@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
@@ -31,7 +30,7 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
-fun ClueScreen(navController: NavHostController, clueIndex: Int) {
+fun ClueScreen(navController: NavHostController, clueIndex: Int, timerViewModel: TimerViewModel) {
     val context = LocalContext.current
     val treasureHunt = remember { loadTreasureHunt(context) }
     val backStackEntry = navController.currentBackStackEntry
@@ -47,6 +46,7 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int) {
     val clueLocation = LatLng(currentClue.longitude, currentClue.latitude)
 
     LaunchedEffect(Unit) {
+        timerViewModel.startTimer()
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 location?.let {
@@ -68,6 +68,8 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int) {
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val elapsedTime by timerViewModel.elapsedTime.collectAsState()
+        Text("Time: ${elapsedTime}s", fontSize = 18.sp)
         Text("Clue Screen", fontSize = 24.sp)
         Spacer(modifier = Modifier.height(20.dp))
         Text(currentClue.clue, fontSize = 18.sp)
@@ -119,6 +121,7 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int) {
                     val encodedClueInfo = URLEncoder.encode(currentClue.info, StandardCharsets.UTF_8.toString())
                     val nextClueIndex = currentClueIndex + 1
                     if (currentClueIndex == 2) { // Assuming 2 is the last clue index
+                        timerViewModel.stopTimer()
                         navController.navigate("HuntDoneScreen/$encodedClueInfo") {
                             popUpTo("ClueScreen/{clueIndex}") { inclusive = true }
                         }
@@ -132,8 +135,6 @@ fun ClueScreen(navController: NavHostController, clueIndex: Int) {
         }) {
             Text("Check Location")
         }
-
-
 
         Spacer(modifier = Modifier.height(20.dp))
     }

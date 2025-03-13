@@ -32,7 +32,7 @@ import androidx.navigation.NavHostController
 import com.example.mobiletreasurehunt.ui.data.RuleItem
 
 @Composable
-fun StartHuntScreen(navController: NavHostController) {
+fun StartHuntScreen(navController: NavHostController, timerViewModel: TimerViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,14 +43,17 @@ fun StartHuntScreen(navController: NavHostController) {
             "Mobile Treasure Hunt!",
             modifier = Modifier
                 .padding(top = 50.dp),
-            fontSize = 30.sp,
-            fontWeight = FontWeight.Bold
-            )
+            fontSize = 30.sp
+        )
         Spacer(modifier = Modifier.height(50.dp))
         RulesScreen()
         Spacer(modifier = Modifier.height(30.dp))
         Button(
-            onClick = { navController.navigate("ClueScreen/0") },
+            onClick = {
+                timerViewModel.resetTimer()
+                timerViewModel.startTimer()
+                navController.navigate("ClueScreen/0")
+            },
             modifier = Modifier.padding(25.dp)
         ) {
             Text("Start Hunt")
