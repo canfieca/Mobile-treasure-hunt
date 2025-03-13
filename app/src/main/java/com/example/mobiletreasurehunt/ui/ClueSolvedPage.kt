@@ -45,7 +45,7 @@ fun ClueSolvedPage(navController: NavHostController, clueInfo: String, clueIndex
                     popUpTo("ClueScreen/{clueIndex}") { inclusive = true }
                 }
             }) {
-                Text("Next Clue")
+                Text("Continue")
             }
         }
     }

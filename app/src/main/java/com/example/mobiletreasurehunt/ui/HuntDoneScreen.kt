@@ -31,7 +31,7 @@ fun HuntDoneScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Hunt Completed!", fontSize = 24.sp)
+            Text("Congratulations you completed the Mobile Treasure Hunt!", fontSize = 24.sp)
             Text("Last Clue Location: $decodedClueInfo", fontSize = 18.sp)
             Text("Total Time: ${elapsedTime}s", fontSize = 18.sp)
         }
